@@ -31,15 +31,21 @@ Antipattern 11
 
 ## Proposition d'arborescence
 src/app/
-  ├── components/
-      ├── Header
-      ├── Cards 
-  ├── pages/  
-      ├── Home
-      ├── Details
-  ├── hooks/ 
-       
-  ├── models/  
-
-
-
+  ├── components/  // Dumb
+  │    ├── Header
+  │    ├── Card
+  │    ├── Chart
+  │
+  │
+  ├── pages/  // Smart
+  │    ├── Home 
+  │    ├── Country 
+  ├── hooks/
+  │    ├──useOlympicData - gère la connection aux data (mock ou backend plus tard)
+  │     
+  ├── models/
+  │    ├── olympics.ts (Country & Participation)
+  ├── data/
+  │    ├──olympicData 
+  │
+  └── App.tsx
