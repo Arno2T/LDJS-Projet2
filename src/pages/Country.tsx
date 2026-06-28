@@ -30,12 +30,7 @@ const Country = () => {
     const { id } = useParams()
     const {data: olympicsData}: {data: Olympic[] | undefined} = useOlympicData();
     
-      // Anti-pattern 5 — console.log à retirer.
-      console.log('Loading country with id:', id)
       const country: Olympic = olympicsData.find((c: Olympic) => c.id === Number(id))
-    
-      // Anti-pattern 5 — console.log à retirer.
-      console.log('Country loaded:', country)
     
       const totalMedals = country.participations.reduce(
         (sum: number, p: Participation) => sum + p.medalsCount,
