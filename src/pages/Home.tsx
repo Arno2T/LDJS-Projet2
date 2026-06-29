@@ -48,31 +48,33 @@ const Home = () => {
           legend: {
             position: 'bottom' as const,
             labels: {
-              color: 'white',
+              color: 'black',
             },
           },
         },
       }
     
       return (
-        <div className="min-h-screen bg-gray-900 text-white p-8">
-          <div className="max-w-6xl mx-auto">
-            <Header />
-    
-            {/* Anti-pattern 8 — Cartes dupliquées — extraire en composant réutilisable (Indicator.tsx). */}
-            <div className="mb-2">
-              <Card text="Pays participants" data={totalParticipatingCountries} />
-              <Card text="Éditions des JO" data={totalGamesEditions}/>
-    
+        <div className="min-h-screen bg-white text-[#39818D] p-8">
+          <div className="max-w-6xl mx-auto grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4">
+            <div className="col-span-4 md:col-span-8 lg:col-span-12">
+              <Header />
             </div>
     
-            <div className="bg-gray-800 p-8 rounded-lg shadow-xl">
+              <div className="col-span-4 md:col-span-4 lg:col-span-6">
+                <Card text="Pays participants" data={totalParticipatingCountries} />
+              </div>
+              <div className="col-span-4 md:col-span-4 lg:col-span-6">
+                <Card text="Éditions des JO" data={totalGamesEditions}/>
+              </div>
+    
+            <div className="col-span-4 md:col-span-8 lg:col-span-12 bg-white p-8 rounded-lg shadow-xl">
               <div style={{ height: '400px' }}>
                 <Pie data={chartData} options={chartOptions} />
               </div>
             </div>
     
-            <div className="text-sm text-gray-400">
+            <div className="col-span-4 md:col-span-8 lg:col-span-12 text-sm text-gray-400">
               <p>Cliquez sur un pays pour voir ses détails</p>
             </div>
           </div>
