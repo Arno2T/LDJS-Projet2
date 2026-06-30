@@ -1,7 +1,7 @@
 # Architecture — TéléSport
 
 ## Arborescence
-
+```
 src/
 ├── components/ # Composants "dumb" 
 │ ├── Header.tsx # Titre et description
@@ -24,6 +24,7 @@ src/
 ├── App.tsx # Point d'entrée React, configuration du routeur
 ├── main.tsx # Montage de l'application dans le DOM
 └── index.css # Styles globaux (Tailwind)
+```
 
 ## Composants : Smart vs Dumb
 

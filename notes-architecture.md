@@ -30,6 +30,7 @@ Antipattern 11
 ### 7. Supprimer les console.log
 
 ## Proposition d'arborescence
+```
 src/app/
   ├── components/  // Dumb
   │    ├── Header
@@ -49,3 +50,4 @@ src/app/
   │    ├──olympicData 
   │
   └── App.tsx
+  ```
