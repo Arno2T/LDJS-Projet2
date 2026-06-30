@@ -1,6 +1,7 @@
 // hooks
 import { useOlympicData } from "../hooks/useOlympicData";
 import {useChartData} from "../hooks/useChardata";
+import { useNavigate } from "react-router-dom";
 
 // Pages & Components
 import Header from "../components/Header";
@@ -16,6 +17,8 @@ import {
   BarElement,
   LineElement,
   PointElement,
+  type ChartEvent,
+  type ActiveElement,
 } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
 
@@ -31,7 +34,8 @@ ChartJS.register(
 )
 
 const Home = () => {
-    
+      const navigate = useNavigate();
+
       const {data: olympicsData, isLoaded}= useOlympicData();
       const totalParticipatingCountries: number = olympicsData ? olympicsData.length : 0
       const totalGamesEditions: number = 5
@@ -39,6 +43,10 @@ const Home = () => {
     
       if (!isLoaded) {
         return <div>Chargement...</div>
+      }
+
+      const onCountryClick = (id: string | number) => {
+        navigate(`/country/${id}`);
       }
     
       const chartOptions = {
@@ -52,6 +60,15 @@ const Home = () => {
             },
           },
         },
+        onClick: (_event: ChartEvent, elements: ActiveElement[]) => {
+            if (elements.length > 0) {
+              const index = elements[0].index;
+              const country = olympicsData[index];
+
+              console.log("Clique sur le pays : ", country.name);
+              onCountryClick(country.id);
+            }
+          }
       }
     
       return (

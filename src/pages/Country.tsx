@@ -1,6 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { type Olympic, type Participation } from "../models/interfaces";
 import { useOlympicData } from "../hooks/useOlympicData";
+import { useEvolutionData, evolutionOptions} from "../hooks/useCountryData";
+import Card from "../components/Card";
 
 import {
   Chart as ChartJS,
@@ -28,99 +30,63 @@ ChartJS.register(
 
 const Country = () => {
     const { id } = useParams()
-    const {data: olympicsData}: {data: Olympic[] | undefined} = useOlympicData();
+    const {data: olympicsData, isLoaded}= useOlympicData();
+    const country = olympicsData.find((c: Olympic) => c.id === Number(id)) ?? {
+      id: 0,
+      name: "Pays introuvable",
+      participations: []
+    }
+    const countryData = useEvolutionData(country);
+      if (!isLoaded) {
+        return <div>Chargement...</div>
+      }
     
-      const country: Olympic = olympicsData.find((c: Olympic) => c.id === Number(id))
-    
-      const totalMedals = country.participations.reduce(
+      const totalMedals: number = country?.participations.reduce(
         (sum: number, p: Participation) => sum + p.medalsCount,
         0,
-      )
-      const totalAthletes = country.participations.reduce(
+      ) ?? 0
+      const totalAthletes: number = country?.participations.reduce(
         (sum: number, p: Participation) => sum + p.athleteCount,
         0,
-      )
-      const totalParticipations = country.participations.length
+      ) ?? 0;
     
-      // Anti-pattern 10 — Préparation des données du graphique dans le composant — extraire dans une fonction ou un hook pour séparer UI et logique. https://react.dev/learn/thinking-in-react
-      const evolutionData = {
-        labels: country.participations.map((p: Participation) => p.year.toString()),
-        datasets: [
-          {
-            label: 'Nombre de médailles',
-            data: country.participations.map((p: Participation) => p.medalsCount),
-            borderColor: 'rgb(75, 192, 192)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            tension: 0.3,
-          },
-        ],
-      }
+      const totalParticipations: number = country?.participations.length ?? 0
     
-      const evolutionOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'top' as const,
-            labels: {
-              color: 'white',
-            },
-          },
-        },
-        scales: {
-          y: {
-            ticks: {
-              color: 'white',
-            },
-            grid: {
-              color: 'rgba(255, 255, 255, 0.1)',
-            },
-          },
-          x: {
-            ticks: {
-              color: 'white',
-            },
-            grid: {
-              color: 'rgba(255, 255, 255, 0.1)',
-            },
-          },
-        },
-      }
     
       return (
-        <div className="min-h-screen bg-gray-900 text-white p-8">
-          <div className="max-w-6xl mx-auto">
-            <h1 className="text-4xl font-bold mb-8">{country.name}</h1>
-    
-            {/* Anti-pattern 8 — Cartes dupliquées avec Home — extraire en composant réutilisable (Indicator.tsx). */}
-            <div className="mb-2">
-              <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-2">
-                <h3 className="text-xl font-semibold mb-2">Participations</h3>
-                <p className="text-4xl font-bold text-blue-400">
-                  {totalParticipations}
-                </p>
-              </div>
-              <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-2">
-                <h3 className="text-xl font-semibold mb-2">Total médailles</h3>
-                <p className="text-4xl font-bold text-yellow-400">{totalMedals}</p>
-              </div>
-              <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold mb-2">Total athlètes</h3>
-                <p className="text-4xl font-bold text-green-400">{totalAthletes}</p>
-              </div>
+        <div className="min-h-screen bg-white text-[#39818D] p-8">
+          <div className="max-w-6xl mx-auto grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4">
+            <div className="col-span-4 md:col-span-8 lg:col-span-12">
+              <Link to="/" className="inline-block px-4 py-2 bg-cyan-700 rounded text-white hover:bg-blue-700 transition">
+                Accueil
+              </Link>
+            </div>
+            <div className="col-span-4 md:col-span-8 lg:col-span-12 bg-cyan-700 rounded-lg p-6">
+              <h1 className="text-4xl text-center text-white font-bold">{country?.name}</h1>
+            </div>
+            <div className="col-span-4 md:col-span-4 lg:col-span-4">
+              <Card text="Participations" data={totalParticipations} />
+            </div>
+            <div className="col-span-4 md:col-span-4 lg:col-span-4">
+              <Card text="Total Médailles" data={totalMedals} />
+            </div>
+            <div className="col-span-4 md:col-span-8 lg:col-span-4">
+              <Card text="Total athlètes" data={totalAthletes} />
             </div>
     
-            <div className="bg-gray-800 p-8 rounded-lg shadow-xl">
-              <div style={{ height: '400px' }}>
-                <Line data={evolutionData} options={evolutionOptions} />
-              </div>
-            </div>
-    
-            <div className="text-sm text-gray-400">
-              <p>Données des 5 dernières éditions des Jeux Olympiques</p>
-            </div>
+            <div className="col-span-4 md:col-span-8 lg:col-span-12">
+        <div className="bg-white p-8 rounded-lg shadow-xl">
+          <div style={{ height: '400px' }}>
+            <Line data={countryData} options={evolutionOptions} />
           </div>
         </div>
-      )
+      </div>
+
+      <div className="col-span-4 md:col-span-8 lg:col-span-12 text-sm text-gray-400">
+        <p>Données des 5 dernières éditions des Jeux Olympiques</p>
+      </div>
+    </div>
+  </div>
+  )
 };
 export default Country;
