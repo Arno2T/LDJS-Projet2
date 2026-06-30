@@ -44,6 +44,9 @@ const Home = () => {
       if (!isLoaded) {
         return <div>Chargement...</div>
       }
+      if (!olympicsData || olympicsData.length === 0) {
+        navigate('*');
+      }
 
       const onCountryClick = (id: string | number) => {
         navigate(`/country/${id}`);
@@ -65,7 +68,6 @@ const Home = () => {
               const index = elements[0].index;
               const country = olympicsData[index];
 
-              console.log("Clique sur le pays : ", country.name);
               onCountryClick(country.id);
             }
           }

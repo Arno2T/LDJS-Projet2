@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { type Olympic, type Participation } from "../models/interfaces";
 import { useOlympicData } from "../hooks/useOlympicData";
 import { useEvolutionData, evolutionOptions} from "../hooks/useCountryData";
@@ -29,6 +29,7 @@ ChartJS.register(
 )
 
 const Country = () => {
+    const navigate = useNavigate();
     const { id } = useParams()
     const {data: olympicsData, isLoaded}= useOlympicData();
     const country = olympicsData.find((c: Olympic) => c.id === Number(id)) ?? {
@@ -36,10 +37,8 @@ const Country = () => {
       name: "Pays introuvable",
       participations: []
     }
+
     const countryData = useEvolutionData(country);
-      if (!isLoaded) {
-        return <div>Chargement...</div>
-      }
     
       const totalMedals: number = country?.participations.reduce(
         (sum: number, p: Participation) => sum + p.medalsCount,
@@ -51,6 +50,13 @@ const Country = () => {
       ) ?? 0;
     
       const totalParticipations: number = country?.participations.length ?? 0
+
+      if (!isLoaded) {
+        return <div>Chargement...</div>
+      }
+      if (country.id === 0) {
+        navigate('*');
+      }
     
     
       return (
