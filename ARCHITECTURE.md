@@ -1,9 +1,10 @@
 # Architecture — TéléSport
 
 ## Arborescence
+
 ```
 src/
-├── components/ # Composants "dumb" 
+├── components/ # Composants "dumb"
 │ ├── Header.tsx # Titre et description
 │ └── Card.tsx # Carte réutilisable avec label + valeur
 │
@@ -28,12 +29,12 @@ src/
 
 ## Composants : Smart vs Dumb
 
-| Composant | Type | Rôle |
-|-----------|------|------|
-| `Home` | Smart | Récupère les données via `useOlympicData`, calcule les KPI, orchestre l'affichage |
+| Composant | Type  | Rôle                                                                                  |
+| --------- | ----- | ------------------------------------------------------------------------------------- |
+| `Home`    | Smart | Récupère les données via `useOlympicData`, calcule les KPI, orchestre l'affichage     |
 | `Country` | Smart | Récupère les données, filtre par pays (route param), prépare le graphique d'évolution |
-| `Header` | Dumb | Affiche le titre et la description, aucun state |
-| `Card` | Dumb | Affiche un indicateur (texte + valeur numérique), réutilisable partout |
+| `Header`  | Dumb  | Affiche le titre et la description, aucun state                                       |
+| `Card`    | Dumb  | Affiche un indicateur (texte + valeur numérique), réutilisable partout                |
 
 ## Custom Hooks
 
@@ -61,8 +62,8 @@ L'architecture isole l'accès aux données dans `useOlympicData`. Pour brancher 
 ```ts
 // Exemple d'évolution dans useOlympicData.ts
 useEffect(() => {
-    fetch("/api/olympics")
-    .then(res => res.json())
+  fetch("/api/olympics")
+    .then((res) => res.json())
     .then(setData)
     .finally(() => setIsLoaded(true));
 }, []);
@@ -76,10 +77,9 @@ e routeur (react-router-dom v6) est configuré dans App.tsx avec les routes :
 
 /country/:id → Country
 
-
 Tu peux créer ce fichier à la racine du projet (`DFSJS-P2/ARCHITECTURE.md`), puis commit :
 
 ```bash
 git add ARCHITECTURE.md
-git commit -m "docs: add front-end architecture 
+git commit -m "docs: add front-end architecture
 ```

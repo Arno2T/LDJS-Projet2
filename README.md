@@ -20,8 +20,8 @@ Interactive web application to visualize historical performance data of countrie
 Clone the repository:
 
 ```bash
-git clone https://github.com/openclassrooms/p2-dfsjs.git
-cd p2-dfsjs
+git clone https://github.com/Arno2T/LDJS-Projet2.git
+cd LDJS-Projet2
 ```
 
 Install dependencies:
@@ -61,6 +61,18 @@ npm run lint
 ## 📁 Project Structure
 
 ```
+src/
+├── components/
+├── pages/
+├── hooks/                  # Custom hooks
+├── models/
+├── data/                   # Data mock
+├── App.tsx                 # Entry Point, router configuration
+├── main.tsx                # React entry point
+├── index.html              # Main HTML page
+├── index.css               # Styles globaux (Tailwind)
+└── .eslintrc.cjs           # ESLint configuration
+
 p2-dfsjs/
 ├── public/              # Static public assets
 ├── src/
@@ -108,10 +120,6 @@ For more information on the technologies used:
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [React Router Documentation](https://reactrouter.com)
 - [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📝 License
 
